@@ -3,7 +3,8 @@ guid: 77e676b0c7059e84098152606d99fee2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - OnKillPlayer: {fileID: 11400000, guid: 88155df14f25c2546833ae906930c7c7, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

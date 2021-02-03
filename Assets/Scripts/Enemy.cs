@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private bool _isMovementBytime;
+    public static Action onPlayerKill;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private int _stepsMovement;
     [SerializeField] private Vector2 _startPosition;
 
-    private void Update() {
-        if (_isMovementBytime)
+    private void FixedUpdate() {
+        MoveWithSpeed();
+
+        if (transform.position.y>2)
         {
-            MoveWithSpeed();
+            transform.position = _startPosition;
         }
     }
 
@@ -23,11 +25,17 @@ public class Enemy : MonoBehaviour
         transform.position = movement;
     }
 
+    public void SpeedUp(float amount) //for debug
+    {
+        _movementSpeed += amount;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             Debug.Log("death");
+            onPlayerKill?.Invoke();
         }
     }
 }
