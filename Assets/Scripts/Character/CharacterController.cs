@@ -89,10 +89,6 @@ public class CharacterController : MonoBehaviour
     
     private void Move(Vector2 direction)
     {
-        /*
-        move to same direction
-        */
-
         transform.Translate(direction.normalized / 2);
         //Debug.Log("Move");
         Invoke("ResetVars",0.2f); //To avoid multiple moves in one swipe or tap
@@ -103,9 +99,6 @@ public class CharacterController : MonoBehaviour
     }
     private void Attack(Vector2 direction)
     {
-        /*
-        attack to same direction
-        */
         Debug.Log("Attack");
         HealthSystem objecttarget = _rayCast.GetObjectDetection(transform.position, direction, 0.5f, ~(1 << LayerMask.NameToLayer("Character"))).gameObject.GetComponentInChildren<HealthSystem>();
         objecttarget?.TakeDamage(1);
