@@ -11,7 +11,7 @@
             RaycastHit2D hit2D;
             if (_rayCastDebugMode)
             {
-                Debug.Log("Debug "+_rayCastDebugMode );
+                //Debug.Log("Debug "+_rayCastDebugMode );
                 Debug.DrawRay(startPoint, direction, Color.red, 1);
             }
 

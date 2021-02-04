@@ -7,11 +7,9 @@ using HealthCareSystem;
 
 public class CharacterController : MonoBehaviour
 {
-    /*
-    get the inputs of the player and send info to move or attack to the correct dirrection 
-    */
     private RayCastSystem<Transform> _rayCast = new RayCastSystem<Transform>();
     private MobileInputs _getInputs = null;
+    
     private bool _moveInProgress;
 
     private void Awake() {
@@ -20,19 +18,8 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
+        
         HandleInput();
-
-        #region Test
-        if (Input.GetKeyDown(KeyCode.A))
-            Move(Vector2.left);
-        if (Input.GetKeyDown(KeyCode.D))
-            Move(Vector2.right);
-        if (Input.GetKeyDown(KeyCode.W))
-            Move(Vector2.up);
-        if (Input.GetKeyDown(KeyCode.S))
-            Move(Vector2.down);
-
-        #endregion
     }
 
     private void HandleInput()
@@ -65,7 +52,6 @@ public class CharacterController : MonoBehaviour
         }
         else return;
         
-        //Debug.Log(direction);
         if (direction.y <-0.4f || direction == Vector2.zero) return; // character cannot go down direction move to same place
 
         HandleDecision(direction);
@@ -78,13 +64,12 @@ public class CharacterController : MonoBehaviour
         _rayCast._rayCastDebugMode = true;
         Transform objecttarget = _rayCast.GetObjectDetection(transform.position, direction, 0.5f,~(1 << LayerMask.NameToLayer("Character")));
         
-        if (objecttarget!=null)
+        if (objecttarget!=null && objecttarget.CompareTag("Blocks"))
             Attack(direction);
         else if(objecttarget!= transform)
             Move(direction);
         else _moveInProgress = false;
         
-        //Debug.Log(objecttarget + " Dir");
     }
     
     private void Move(Vector2 direction)

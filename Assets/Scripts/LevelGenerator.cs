@@ -9,18 +9,19 @@ public class LevelGenerator : MonoBehaviour
 
     public static System.Random rnd = new System.Random();
     [Tooltip("Block Types uses to populate block object")]
-    [SerializeField] private List<TypesProperties> _blockTypes;
+    [SerializeField] private List<TypesProperties> _blockTypes = default;
+    [SerializeField] private GameObject _endStage;
 
     [Tooltip("Value of the gap between blocks")]
     [SerializeField] private float _positionGap = 0.5f;
 
     [Tooltip("Position where the 1st block will appear. Moving then to right and top")]
-    [SerializeField] private Vector2 _startPosition;
+    [SerializeField] private Vector2 _startPosition = default;
 
     [Tooltip("Value for the vertical size")]
-    [SerializeField] private int _verticalSize;
+    [SerializeField] private int _verticalSize = 18;
     [Tooltip("Value for the horizontal size")]
-    [SerializeField] private int _horizontalSize;
+    [SerializeField] private int _horizontalSize = 7;
     
     
 
@@ -48,6 +49,10 @@ public class LevelGenerator : MonoBehaviour
             }
             newPosition.y += _positionGap;
         }
+        newPosition.x = _startPosition.x+1.5f;
+        GameObject endStage = Instantiate(_endStage, transform);
+        endStage.transform.position = newPosition;
+        endStage.SetActive(true);
     }
 
     public ScriptableBlock SellectBlockType(List<TypesProperties> items)
@@ -67,7 +72,7 @@ public class LevelGenerator : MonoBehaviour
         for (int i = 0; i < items.Count; i++)
         {
             accumulatedProbability += items[i].dropChance;
-            Debug.Log(randomNumber + " Dice "+ accumulatedProbability+" prob "+ items[i].blockType+"Type ");
+            //Debug.Log(randomNumber + " Dice "+ accumulatedProbability+" prob "+ items[i].blockType+"Type ");
             if (randomNumber <= accumulatedProbability)
                 return items[i].blockType;
         }

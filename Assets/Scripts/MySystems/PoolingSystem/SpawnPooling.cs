@@ -21,9 +21,9 @@
         [Header("Spawner Type Random Settings")]
 
         [Range(0,100)]
-        [SerializeField] private float _betweenMinNumber;
+        [SerializeField] private float _betweenMinNumber = 0;
         [Range(0,100)]
-        [SerializeField] private float _betweenMaxNumber;
+        [SerializeField] private float _betweenMaxNumber = 1;
         [Header("Spawner Type KeyInput Settings")]
         [SerializeField] private KeyCode interactKey;
 

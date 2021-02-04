@@ -26,7 +26,7 @@ public void HealthSystemSetup(float health)
             
             _healthSlider.maxValue = _maxHealth;
             _healthSlider.value = health;
-            Debug.Log(_healthSlider.maxValue);
+            //Debug.Log(_healthSlider.maxValue);
 
         }
 

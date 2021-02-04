@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using HealthCareSystem;
 
@@ -7,15 +6,14 @@ public class BlockBase : MonoBehaviour
 {
     [SerializeField] private ScriptableBlock _blockData;
     [SerializeField] private GameObject _healthBarPrefab;
+    public static Action<float, float> onBlockBreak;
     private SpriteRenderer _spriteRenderer;
     private HealthSystem _healthSystem;
+    private bool _isUnbreakable;
 
     private void Awake() {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         
-    }
-    private void OnEnable() {
-        //LoadBlockData();
     }
     public void LoadBlockData(ScriptableBlock blockData)
     {
@@ -25,28 +23,31 @@ public class BlockBase : MonoBehaviour
         name = _blockData.blockName;
         _spriteRenderer.sprite = _blockData.displaySprites;
 
-        GameObject hpBarUI = Instantiate(_healthBarPrefab);
-        hpBarUI.transform.position = transform.position;
-        hpBarUI.transform.SetParent(transform);
-        _healthSystem = hpBarUI.GetComponent<HealthSystem>();
-        Debug.Log(_blockData.health+"HP");
-        _healthSystem.HealthSystemSetup(_blockData.health);
+        if (_blockData.health>0)
+        {
+           GameObject hpBarUI = Instantiate(_healthBarPrefab);
+            hpBarUI.transform.position = transform.position;
+            hpBarUI.transform.SetParent(transform);
+            _healthSystem = hpBarUI.GetComponent<HealthSystem>();
+            //Debug.Log(_blockData.health+"HP");
+            _healthSystem.HealthSystemSetup(_blockData.health);
+        }
+        
     }
 
     private void Update()
     {
-        if (!_healthSystem.IsAlive)
+        if (_healthSystem?.IsAlive==false)
         {
-            /*
-            Call event GainScore and GainCoins
-            Destroy/Disable Block
-            */
+            onBlockBreak?.Invoke(_blockData.coinValue, _blockData.scoreValue);
             gameObject.SetActive(false);
         }
-        
 
-}
+    }
     
+    private void OnDisable() {
+        
+    }
     
     
 }
