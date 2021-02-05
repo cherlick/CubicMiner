@@ -13,10 +13,10 @@ public class Enemy : MonoBehaviour
     private void FixedUpdate() {
         MoveWithSpeed();
 
-        if (transform.position.y>2)
+        /*if (transform.position.y>2)
         {
             transform.position = _startPosition;
-        }
+        }*/
     }
 
     private void MoveWithSpeed()
