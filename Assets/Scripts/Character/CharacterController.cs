@@ -52,7 +52,7 @@ public class CharacterController : MonoBehaviour
         }
         else return;
         
-        if (direction.y <-0.4f || direction == Vector2.zero) return; // character cannot go down direction move to same place
+        if (direction == Vector2.zero) return; // character cannot move to same place
 
         HandleDecision(direction);
         
