@@ -6,7 +6,7 @@ public class BlockBase : MonoBehaviour
 {
     [SerializeField] private ScriptableBlock _blockData;
     [SerializeField] private GameObject _healthBarPrefab;
-    public static Action<float, float> onBlockBreak;
+    public static Action<ScriptableBlock> OnBreakBlock;
     private SpriteRenderer _spriteRenderer;
     private HealthSystem _healthSystem;
     private bool _isUnbreakable;
@@ -39,7 +39,7 @@ public class BlockBase : MonoBehaviour
     {
         if (_healthSystem?.IsAlive==false)
         {
-            onBlockBreak?.Invoke(_blockData.coinValue, _blockData.scoreValue);
+            OnBreakBlock?.Invoke(_blockData);
             gameObject.SetActive(false);
         }
 

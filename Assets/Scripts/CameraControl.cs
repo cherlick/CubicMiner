@@ -18,4 +18,8 @@ public class CameraControl : MonoBehaviour
     {
         transform.position = new Vector3(transform.position.x, _yPosition+3,transform.position.z);
     }
+
+    private void OnDisable() {   
+        StageTrigger.onStageTrigger -= MoveCamera;
+    }
 }
