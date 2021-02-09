@@ -58,6 +58,7 @@
 
         public void ReturnObject (GameObject objectToEnqueue, string tag) {
             objectToEnqueue.SetActive (false);
+            objectToEnqueue.transform.SetParent (_parentForObjects);
             if (_poolDic.TryGetValue (tag, out Queue<GameObject> poolList))
                 poolList.Enqueue (objectToEnqueue);
         }

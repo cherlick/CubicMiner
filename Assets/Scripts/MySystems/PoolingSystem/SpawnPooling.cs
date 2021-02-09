@@ -6,12 +6,12 @@
     public class SpawnPooling : MonoBehaviour
     {
         private enum SpawnerType { Timer, RandomTime, EventTrigger, KeyInput };
-        private ObjectPooling _pooling;
+        private ObjectPooling _pooling = default;
         [Header("Pools List")]
         [SerializeField] private Pool _localPool = null;
 
         [Header("Spawner Settings")]
-        [SerializeField] private SpawnerType _spawnerType;
+        [SerializeField] private SpawnerType _spawnerType = default;
         [SerializeField] private bool _resetPosition = true;
         [SerializeField] private bool _resetRotation = true;
 
@@ -25,7 +25,7 @@
         [Range(0,100)]
         [SerializeField] private float _betweenMaxNumber = 1;
         [Header("Spawner Type KeyInput Settings")]
-        [SerializeField] private KeyCode interactKey;
+        [SerializeField] private KeyCode interactKey = default;
 
         public event Action OnEventSpawn;
         public void EventSpawn(){
