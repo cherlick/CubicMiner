@@ -1736,7 +1736,7 @@ MonoBehaviour:
       limitPerRow: 0
   _startPosition: {x: -1.5, y: -3.5}
   _spacementInGrid: 0.5
-  grid: {x: 7, y: 12}
+  _grid: {x: 7, y: 12}
 --- !u!114 &1745504827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1749,19 +1749,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ab2c302a089d54c915cb2ca248271b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pooling: {fileID: 0}
   _blockTypes:
-  - blockType: {fileID: 11400000, guid: 0bca3ee93d49c19498e5332ed7b1af48, type: 2}
-    dropChance: 70
-    limitPerRow: 0
-  - blockType: {fileID: 11400000, guid: f75ec197261cbec44b673a7d9cd91791, type: 2}
-    dropChance: 5
-    limitPerRow: 0
-  - blockType: {fileID: 11400000, guid: 731caba81b7eb124f993083a5e4584e2, type: 2}
-    dropChance: 30
-    limitPerRow: 0
-  - blockType: {fileID: 11400000, guid: 09914da5b90dba6418eb2d525fc34d50, type: 2}
-    dropChance: 20
-    limitPerRow: 0
+  - {blockType: {fileID: 11400000, guid: 0bca3ee93d49c19498e5332ed7b1af48, type: 2}, dropChance: 70, limitPerRow: 0}
+  - {blockType: {fileID: 11400000, guid: f75ec197261cbec44b673a7d9cd91791, type: 2}, dropChance: 5, limitPerRow: 0}
+  - {blockType: {fileID: 11400000, guid: 731caba81b7eb124f993083a5e4584e2, type: 2}, dropChance: 30, limitPerRow: 0}
+  - {blockType: {fileID: 11400000, guid: 09914da5b90dba6418eb2d525fc34d50, type: 2}, dropChance: 20, limitPerRow: 0}
   _endStage: {fileID: 864631618440081337, guid: 841f82cb8e559a240a9ad9834cdf0836, type: 3}
   _positionGap: 0.5
   _startPosition: {x: -1.5, y: -3.5}
@@ -1866,7 +1859,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &2079215601
 BoxCollider2D:
   m_ObjectHideFlags: 0

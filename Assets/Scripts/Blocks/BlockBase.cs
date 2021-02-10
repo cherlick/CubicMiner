@@ -25,10 +25,13 @@ public class BlockBase : MonoBehaviour
 
         if (_blockData.health>0)
         {
-           GameObject hpBarUI = Instantiate(_healthBarPrefab);
-            hpBarUI.transform.position = transform.position;
-            hpBarUI.transform.SetParent(transform);
-            _healthSystem = hpBarUI.GetComponent<HealthSystem>();
+            if(_healthSystem==null){
+                GameObject hpBarUI = Instantiate(_healthBarPrefab);
+                hpBarUI.transform.position = transform.position;
+                hpBarUI.transform.SetParent(transform);
+                _healthSystem = hpBarUI.GetComponent<HealthSystem>();
+            }
+                
             //Debug.Log(_blockData.health+"HP");
             _healthSystem.HealthSystemSetup(_blockData.health);
         }

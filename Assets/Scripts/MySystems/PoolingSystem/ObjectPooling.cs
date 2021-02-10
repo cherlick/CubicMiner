@@ -47,18 +47,24 @@
             return obj;
         }
         public GameObject GetObject (Pool pool) {
+            GameObject objectRequested = null;
             if (_poolDic.TryGetValue (pool.prefab.name, out Queue<GameObject> poolList)) {
-                if (poolList.Count == 0 && pool.allowtoIncrement) {
-                    return CreateObject (pool.prefab);
-                } else if (poolList.Count > 0) {
-                    return poolList.Dequeue ();
-                } else { return null; }
+                if (poolList.Count == 0 && pool.allowtoIncrement)
+                    objectRequested = CreateObject(pool.prefab);
+                else
+                    objectRequested = poolList.Dequeue();
+
+                
+                return objectRequested;
             } else { return null; }
         }
 
-        public void ReturnObject (GameObject objectToEnqueue, string tag) {
+        public void ResetObject (GameObject objectToEnqueue, string tag) {
             objectToEnqueue.SetActive (false);
             objectToEnqueue.transform.SetParent (_parentForObjects);
+            ReturnObject(objectToEnqueue, tag);
+        }
+        public void ReturnObject (GameObject objectToEnqueue, string tag) {
             if (_poolDic.TryGetValue (tag, out Queue<GameObject> poolList))
                 poolList.Enqueue (objectToEnqueue);
         }

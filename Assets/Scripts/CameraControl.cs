@@ -16,6 +16,7 @@ public class CameraControl : MonoBehaviour
 
     private void MoveCamera(float _yPosition)
     {
+        //Debug.Log("Camera Move "+_yPosition);
         transform.position = new Vector3(transform.position.x, _yPosition+3,transform.position.z);
     }
 

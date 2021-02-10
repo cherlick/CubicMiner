@@ -37,7 +37,7 @@ public class CharacterController : MonoBehaviour
             if (objecttarget != null && objecttarget == transform)
                 return;
             direction = _getInputs.TouchPosition - (Vector2)transform.position;
-            Debug.Log(direction.magnitude);
+            //Debug.Log(direction.magnitude);
             if (direction.magnitude > .77f) return;
             else direction = direction.normalized;
 
@@ -84,7 +84,7 @@ public class CharacterController : MonoBehaviour
     }
     private void Attack(Vector2 direction)
     {
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
         HealthSystem objecttarget = _rayCast.GetObjectDetection(transform.position, direction, 0.5f, ~(1 << LayerMask.NameToLayer("Character"))).gameObject.GetComponentInChildren<HealthSystem>();
         objecttarget?.TakeDamage(1);
         _moveInProgress = false;

@@ -7,7 +7,7 @@ public class StageTrigger : MonoBehaviour
     public static Action<float> onStageTrigger;
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("Stage");
+        //Debug.Log("Stage");
         if (other.gameObject.CompareTag("Player"))
             onStageTrigger?.Invoke(transform.position.y);
     }

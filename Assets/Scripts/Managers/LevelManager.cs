@@ -6,12 +6,12 @@ using PoolingSystem;
 
 public class LevelManager : Singleton<LevelManager>
 {
-    private int _stageLevel = 0;
-    public int GetCurrentStage => _stageLevel=1;
+    [SerializeField] private int _stageLevel = 0;
+    public int GetCurrentStage => _stageLevel;
     private ObjectPooling _pooling = null;
 
     [Tooltip("Properties for the stages, blocks and there generation change")]
-    [SerializeField] private List<StagesProperties> _stagesProperties = null;
+    [SerializeField] private List<StagesProperties> _stagesProperties = new List<StagesProperties>();
 
     [Tooltip("Position where the 1st block will appear. Moving then to right and top")]
     [SerializeField] private Vector2 _startPosition = default;
@@ -20,58 +20,87 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private float _spacementInGrid = 0.5f;
 
     [Tooltip("Value for the grid size")]
-    [SerializeField] private Vector2 grid = new Vector2(7,14);
+    [SerializeField] private Vector2 _grid = new Vector2(7,14);
+    private int _stageDifficulty = 0;
 
-    private Dictionary<int, List<GameObject>> _previousStages;
 
+    [SerializeField] private Dictionary<int, List<GameObject>> _stagesCreated = new Dictionary<int, List<GameObject>>();
 
+    private void OnEnable() {
+        StageTrigger.onStageTrigger += OnTriggerRequest;
+    }
+    private void OnDisable() {   
+        StageTrigger.onStageTrigger -= OnTriggerRequest;
+    }
     private void Start() {
         _pooling = ObjectPooling.Instance;
         StageGenerator();
     }
-    private void StageGenerator(){
-        CreateGrid();
+
+    private void OnTriggerRequest(float notUsed) {
         _stageLevel++;
+        Debug.Log(_stageDifficulty+" - "+_stagesProperties.Count);
+        if(_stageLevel%2==0 && _stagesProperties.Count-1>_stageDifficulty)
+            _stageDifficulty++;
+        StageGenerator();
+        
+    }
+    private void StageGenerator(){
+        
+        CreateGrid();
         CreateStageGate();
-        //Generate full stage
+        StageCleaner();
+        _startPosition.y += _spacementInGrid * (_grid.y+2);
     }
 
     private void CreateStageGate()
     {
         GameObject stageGate = _pooling?.GetObjectOnStartPool("StageGate");
-        stageGate.transform.position = new Vector2(_startPosition.x, _startPosition.y + grid.y*_spacementInGrid);
+        stageGate.SetActive(false);
+        stageGate.transform.position = new Vector2(_startPosition.x, _startPosition.y + _grid.y*_spacementInGrid);
         stageGate.SetActive(true);
+        _pooling.ReturnObject(stageGate,"StageGate");
     }
 
     private void StageCleaner(){
-        if (_stageLevel-2>0)
+        if (_stagesCreated.Count>2)
         {
             List <GameObject> tempBlocks = null;
-            if(_previousStages.TryGetValue(_stageLevel-2, out tempBlocks))
+            if(_stagesCreated.TryGetValue(_stageLevel-2, out tempBlocks))
             {
                 foreach (var block in tempBlocks)
-                    _pooling.ReturnObject(block, "Block");     
+                    _pooling.ResetObject(block, "Block"); 
+
             }
+            _stagesCreated.Remove(_stageLevel-2);
             
+
         }
         
     }
 
     private void CreateGrid(){
-        for (var i = 0; i < grid.y; i++)
-            GenerateRow(_startPosition.y+_spacementInGrid*i);
-    }
-    private void GenerateRow(float yPosition){
-        Vector2 nextPosition = new Vector2(_startPosition.x, yPosition);
-        for (var h = 0; h < grid.x; h++)
+        List <GameObject> tempBlocks = new List<GameObject>();
+        
+        for (var i = 0; i < _grid.y; i++)
         {
-            BlockBase blockPooled = _pooling.GetObjectOnStartPool("Block").GetComponent<BlockBase>();
-            blockPooled.LoadBlockData(BlocksSelector.SellectBlockType(_stagesProperties[_stageLevel].blocksProperties));
+            Vector2 nextPosition = new Vector2(_startPosition.x, _startPosition.y+_spacementInGrid*i);
+            
+            for (var h = 0; h < _grid.x; h++)
+            {
+                BlockBase blockPooled = _pooling.GetObjectOnStartPool("Block").GetComponent<BlockBase>();
 
-            blockPooled.transform.position = nextPosition;
-            blockPooled.gameObject.SetActive(true);
-            nextPosition.x += _spacementInGrid;
+                
+                Debug.Log(_stageDifficulty+" _stageDifficulty");
+                blockPooled.LoadBlockData(BlocksSelector.SellectBlockType(_stagesProperties[_stageDifficulty].blocksProperties));
+
+                blockPooled.transform.position = nextPosition;
+                blockPooled.gameObject.SetActive(true);
+                nextPosition.x += _spacementInGrid;
+                tempBlocks.Add(blockPooled.gameObject);
+            }
         }
+        _stagesCreated[_stageLevel]=tempBlocks;
     }
 
     

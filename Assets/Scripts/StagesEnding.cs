@@ -13,6 +13,7 @@ public class StagesEnding : MonoBehaviour
         _randomSelected = Random.Range(0, _differentEndings.Count);
         _differentEndings[_randomSelected].SetActive(true);
         _stageText.text = "Stage " + LevelManager.instance?.GetCurrentStage;
+        Debug.Log("Enable "+LevelManager.instance?.GetCurrentStage);
     }
     private void OnDisable() {
         foreach (var endings in _differentEndings){_differentEndings[_randomSelected].SetActive(false); }
