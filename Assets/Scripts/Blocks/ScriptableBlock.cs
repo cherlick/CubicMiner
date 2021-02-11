@@ -13,6 +13,4 @@ public class ScriptableBlock : ScriptableObject
     public Sprite displaySprites;
     public List<Sprite> decaySprites;
     public bool isUnlock;
-
-
 }

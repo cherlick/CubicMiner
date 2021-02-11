@@ -63,10 +63,10 @@ public class LevelManager : Singleton<LevelManager>
     }
 
     private void StageCleaner(){
-        if (_stagesCreated.Count>2)
+        if (_stagesCreated.Count>3)
         {
             List <GameObject> tempBlocks = null;
-            if(_stagesCreated.TryGetValue(_stageLevel-2, out tempBlocks))
+            if(_stagesCreated.TryGetValue(_stageLevel-3, out tempBlocks))
             {
                 foreach (var block in tempBlocks)
                     _pooling.ResetObject(block, "Block"); 

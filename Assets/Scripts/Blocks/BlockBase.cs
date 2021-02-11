@@ -13,7 +13,6 @@ public class BlockBase : MonoBehaviour
 
     private void Awake() {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        
     }
     public void LoadBlockData(ScriptableBlock blockData)
     {
@@ -47,12 +46,5 @@ public class BlockBase : MonoBehaviour
             OnBreakBlock?.Invoke(_blockData);
             gameObject.SetActive(false);
         }
-
     }
-    
-    private void OnDisable() {
-        
-    }
-    
-    
 }
