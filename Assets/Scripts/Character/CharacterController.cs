@@ -63,10 +63,10 @@ public class CharacterController : MonoBehaviour
         _moveInProgress = true;
         _rayCast._rayCastDebugMode = true;
         Transform objecttarget = _rayCast.GetObjectDetection(transform.position, direction, 0.5f,~(1 << LayerMask.NameToLayer("Character")));
-        
+        Debug.Log(objecttarget?.tag);
         if (objecttarget!=null && objecttarget.CompareTag("Blocks"))
             Attack(direction);
-        else if(objecttarget!= transform)
+        else if(objecttarget!= transform && objecttarget?.tag != "Wall")
             Move(direction);
         else _moveInProgress = false;
         

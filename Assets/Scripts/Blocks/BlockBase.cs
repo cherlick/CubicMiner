@@ -34,6 +34,8 @@ public class BlockBase : MonoBehaviour
                 
             //Debug.Log(_blockData.health+"HP");
             _healthSystem.HealthSystemSetup(_blockData.health);
+        }else if(_healthSystem!=null){
+            Destroy(_healthSystem.gameObject);
         }
         
     }
