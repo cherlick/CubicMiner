@@ -7,19 +7,23 @@ public class Enemy : MonoBehaviour
 {
     public static Action onPlayerKill;
     [SerializeField] private float _movementSpeed;
-    [SerializeField] private int _stepsMovement;
+    private bool _monsterAwake = false ;
     [SerializeField] private Vector2 _startPosition;
 
-    private void FixedUpdate() {
-        MoveWithSpeed();
-
-        /*if (transform.position.y>2)
-        {
-            transform.position = _startPosition;
-        }*/
+    private void OnEnable() {
+        CharacterController.OnPlayerMoveDone += AwakeMonster;
+    }
+    private void OnDisable() {
+        CharacterController.OnPlayerMoveDone -= AwakeMonster;
     }
 
-    private void MoveWithSpeed()
+    private void AwakeMonster() => _monsterAwake = true;
+    private void FixedUpdate() {
+        if (_monsterAwake)
+            Move();
+    }
+
+    private void Move()
     {
         Vector2 movement = (Vector2) transform.position + Vector2.up * _movementSpeed*Time.fixedDeltaTime;
         transform.position = movement;

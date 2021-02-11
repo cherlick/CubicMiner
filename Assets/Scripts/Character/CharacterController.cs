@@ -1,16 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using CastMyWay;
 using MobileInputSystem;
 using HealthCareSystem;
+using System;
 
 public class CharacterController : MonoBehaviour
 {
+    public static Action OnPlayerMoveDone;
     private RayCastSystem<Transform> _rayCast = new RayCastSystem<Transform>();
     private MobileInputs _getInputs = null;
     
-    private bool _moveInProgress;
+    private bool _moveInProgress = false;
+    private bool _playerStarted = false;
 
     private void Awake() {
         _getInputs = FindObjectOfType<MobileInputs>();
@@ -18,7 +19,6 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
-        
         HandleInput();
     }
 
@@ -63,7 +63,9 @@ public class CharacterController : MonoBehaviour
         _moveInProgress = true;
         _rayCast._rayCastDebugMode = true;
         Transform objecttarget = _rayCast.GetObjectDetection(transform.position, direction, 0.5f,~(1 << LayerMask.NameToLayer("Character")));
-        Debug.Log(objecttarget?.tag);
+        
+        if(!_playerStarted) OnPlayerMoveDone?.Invoke();
+
         if (objecttarget!=null && objecttarget.CompareTag("Blocks"))
             Attack(direction);
         else if(objecttarget!= transform && objecttarget?.tag != "Wall")
@@ -77,6 +79,7 @@ public class CharacterController : MonoBehaviour
         transform.Translate(direction.normalized / 2);
         //Debug.Log("Move");
         Invoke("ResetVars",0.2f); //To avoid multiple moves in one swipe or tap
+        _playerStarted = true;
     }
 
     private void ResetVars() {
@@ -88,5 +91,6 @@ public class CharacterController : MonoBehaviour
         HealthSystem objecttarget = _rayCast.GetObjectDetection(transform.position, direction, 0.5f, ~(1 << LayerMask.NameToLayer("Character"))).gameObject.GetComponentInChildren<HealthSystem>();
         objecttarget?.TakeDamage(1);
         _moveInProgress = false;
+        _playerStarted = true;
     }
 }
