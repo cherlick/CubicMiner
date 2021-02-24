@@ -26,12 +26,13 @@ public class CharacterController : MonoBehaviour
     {
         Vector2 direction = Vector2.zero;
         if (_moveInProgress) return;
-
-        if (_getInputs.IsSwipe)
+        try
+        {
+            if (_getInputs.IsSwipe)
             direction = _getInputs.SwipeDirection;//Using swipe to attack or move
             
-        else if (_getInputs.IsTapTouch)
-        {
+            else if (_getInputs.IsTapTouch)
+            {
             //Avoid Taping it self
             Transform objecttarget = _rayCast.GetObjectDetection(_getInputs.TouchPosition, transform.position, 0f, (1 << LayerMask.NameToLayer("Character")));
             if (objecttarget != null && objecttarget == transform)
@@ -51,6 +52,12 @@ public class CharacterController : MonoBehaviour
             
         }
         else return;
+        }
+        catch (Exception ex)
+        {
+             Debug.LogWarning(ex);
+        }
+        
         
         if (direction == Vector2.zero) return; // character cannot move to same place
 

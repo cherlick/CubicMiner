@@ -16,6 +16,6 @@ MonoBehaviour:
   health: 0
   coinValue: 0
   scoreValue: 0
-  displaySprites: {fileID: 21300000, guid: 1fdea89d61a6ca54f88570bd4f2bdd91, type: 3}
+  displaySprites: {fileID: 21300000, guid: f3422f31b60620345bf51412a59e3f6e, type: 3}
   decaySprites: []
   isUnlock: 1
