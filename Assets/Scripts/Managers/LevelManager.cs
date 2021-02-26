@@ -56,6 +56,8 @@ public class LevelManager : Singleton<LevelManager>
     private void CreateStageGate()
     {
         GameObject stageGate = _pooling?.GetObjectOnStartPool("StageGate");
+        if (stageGate==null) return;
+
         stageGate.SetActive(false);
         stageGate.transform.position = new Vector2(_startPosition.x, _startPosition.y + _grid.y*_spacementInGrid);
         stageGate.SetActive(true);
@@ -81,26 +83,33 @@ public class LevelManager : Singleton<LevelManager>
 
     private void CreateGrid(){
         List <GameObject> tempBlocks = new List<GameObject>();
-        
-        for (var i = 0; i < _grid.y; i++)
+        try
         {
-            Vector2 nextPosition = new Vector2(_startPosition.x, _startPosition.y+_spacementInGrid*i);
-            
-            for (var h = 0; h < _grid.x; h++)
+            for (var i = 0; i < _grid.y; i++)
             {
-                BlockBase blockPooled = _pooling.GetObjectOnStartPool("Block").GetComponent<BlockBase>();
-
+                Vector2 nextPosition = new Vector2(_startPosition.x, _startPosition.y+_spacementInGrid*i);
                 
-                Debug.Log(_stageDifficulty+" _stageDifficulty");
-                blockPooled.LoadBlockData(BlocksSelector.SellectBlockType(_stagesProperties[_stageDifficulty].blocksProperties));
+                for (var h = 0; h < _grid.x; h++)
+                {
+                    BlockBase blockPooled = _pooling.GetObjectOnStartPool("Block").GetComponent<BlockBase>();
 
-                blockPooled.transform.position = nextPosition;
-                blockPooled.gameObject.SetActive(true);
-                nextPosition.x += _spacementInGrid;
-                tempBlocks.Add(blockPooled.gameObject);
+                    
+                    Debug.Log(_stageDifficulty+" _stageDifficulty");
+                    blockPooled.LoadBlockData(BlocksSelector.SellectBlockType(_stagesProperties[_stageDifficulty].blocksProperties));
+
+                    blockPooled.transform.position = nextPosition;
+                    blockPooled.gameObject.SetActive(true);
+                    nextPosition.x += _spacementInGrid;
+                    tempBlocks.Add(blockPooled.gameObject);
+                }
             }
+            _stagesCreated[_stageLevel]=tempBlocks;
+            }
+        catch (System.Exception ex)
+        {
+             Debug.LogWarning(ex);
         }
-        _stagesCreated[_stageLevel]=tempBlocks;
+        
     }
 
     
